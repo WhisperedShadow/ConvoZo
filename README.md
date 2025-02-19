@@ -1,1 +1,0 @@
-# Just a Learning app powered with Gemini AI 
