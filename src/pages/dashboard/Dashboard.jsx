@@ -7,9 +7,10 @@ const Dashboard = () => {
   const [name, setName] = useState(null);
   const [streak, setStreak] = useState(null);
   const [rank, setRank] = useState(null);
+  const [email, setEmail]=useState(null);
 
   useEffect(() => {
-    const unsub = getUserData(console.log, setName, setStreak, console.log);
+    const unsub = getUserData(setEmail, setName, setStreak, console.log);
 
     getAllUsers().then((data) => {
       setUsers(data);
@@ -47,7 +48,7 @@ const Dashboard = () => {
           {users.slice(0, 10).map((user, index) => (
             <tr
               key={index}
-              className={user.name === name ? styles.highlight : ""}
+              className={user.email === email ? styles.highlight : ""}
             >
               <td>{index + 1}</td>
               <td>{user.name}</td>
