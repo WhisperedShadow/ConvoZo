@@ -1,5 +1,5 @@
 import { db, auth, database } from "../config/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, collection, getDoc, setDoc, getDocs } from "firebase/firestore";
 import { ref, get } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -11,7 +11,13 @@ export const getUserStreak = async (uid, setStreak) => {
     if (userSnap.exists()) {
       setStreak(userSnap.data().streak);
     } else {
-      console.log("No such user found!");
+      const date = new Date().toLocaleDateString("en-CA");
+      await setDoc(userRef, {
+        lastPracticeDate: date,
+        practiceSeconds: 0,
+        streak: 0,
+      });
+      setStreak(0);
     }
   } catch (error) {
     console.error("Error fetching user:", error);
@@ -19,17 +25,58 @@ export const getUserStreak = async (uid, setStreak) => {
 };
 
 export const getUserData = (setEmail, setName, setStreak, setLog) => {
-  return onAuthStateChanged(auth, (user) => {
+  return onAuthStateChanged(auth, async (user) => {
     if (user) {
+      setLog(true);
       setEmail(user.email);
-      get(ref(database, `users/${user.uid}/username`)).then((snapshot) => {
+      try {
+        const snapshot = await get(ref(database, `users/${user.uid}/username`));
         if (snapshot.exists()) {
           setName(snapshot.val());
+        } else {
+          setName("Guest");
         }
-      });
+      } catch (error) {
+        console.error("Error fetching username:", error);
+      }
       getUserStreak(user.uid, setStreak);
     } else {
       setLog(false);
     }
   });
+};
+
+export const getAllUsers = async () => {
+  const combinedUsers = [];
+
+  try {
+    const usersSnapshot = await getDocs(collection(db, "users"));
+    const firestoreUsers = {};
+    usersSnapshot.forEach((doc) => {
+      firestoreUsers[doc.id] = {
+        streak: doc.data().streak || 0,
+        lastPracticeDate: doc.data().lastPracticeDate || "N/A",
+      };
+    });
+
+    const rtdbSnapshot = await get(ref(database, "users"));
+    if (rtdbSnapshot.exists()) {
+      const rtdbUsers = rtdbSnapshot.val();
+
+      Object.keys(rtdbUsers).forEach((uid) => {
+        combinedUsers.push({
+          uid,
+          name: rtdbUsers[uid]?.username || "Unknown",
+          email: rtdbUsers[uid]?.email || "No Email",
+          streak: firestoreUsers[uid]?.streak || 0,
+          lastPracticeDate: firestoreUsers[uid]?.lastPracticeDate || "N/A",
+        });
+      });
+      combinedUsers.sort((a, b) => b.streak - a.streak);
+    }
+  } catch (error) {
+    console.error("Error fetching users:", error);
+  }
+
+  return combinedUsers;
 };

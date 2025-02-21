@@ -1,0 +1,17 @@
+.container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .logo img {
+    margin-bottom: 10px;
+  }
+  
+  .link {
+    display: block;
+    margin-top: 10px;
+    color: blue;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  

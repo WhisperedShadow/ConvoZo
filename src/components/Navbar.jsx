@@ -26,7 +26,6 @@ const Navbar = () => {
   const [log, setLog] = useState(true);
   const location = useLocation();
   useEffect(() => {
-    
     const unsubscribe = getUserData(setEmail, setName, setStreak, setLog);
 
     const profileIcon = document.querySelector("#profilepopup");
@@ -55,8 +54,13 @@ const Navbar = () => {
     }
   };
 
-  if(location.pathname === "/login" || location.pathname === "/signup") return null;
-  if (!log) return <Navigate to='/login' /> ;
+  if (
+    location.pathname === "/login" ||
+    location.pathname === "/signup" ||
+    location.pathname === "/reset-password"
+  )
+    return null;
+  if (!log) return <Navigate to="/login" />;
   return (
     <>
       <div className={styles.header}>
