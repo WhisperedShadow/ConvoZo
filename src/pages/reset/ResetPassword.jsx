@@ -24,7 +24,7 @@ const ResetPassword = () => {
   return (
     <div className={styles.container}>
       <div className={styles.logo}>
-        <img src="logoo.png" alt="Logo" width="80" />
+        <img src="/icons/logoo.png" alt="Logo" width="80" />
       </div>
       <h1>Forgot Password?</h1>
       <input

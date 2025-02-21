@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -16,7 +17,7 @@ const Login = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, formData.email, formData.password);
-      alert("Logging in");
+      alert("Logging in...");
       navigate("/");
     } catch (error) {
       alert(`Error: ${error.message}`);
@@ -26,7 +27,7 @@ const Login = () => {
   return (
     <div className={styles.container}>
       <div className={styles.logo}>
-        <img src="logoo.png" alt="Logo" width="80" />
+        <img src="icons/logoo.png" alt="Logo" width="80" />
       </div>
       <h1>Nice to meet you back, Let’s Login!</h1>
       <form onSubmit={handleLogin}>
@@ -35,6 +36,7 @@ const Login = () => {
           type="email"
           placeholder="example@mail.com"
           onChange={handleChange}
+          value={formData.email}
           required
         />
         <input
@@ -42,6 +44,7 @@ const Login = () => {
           type="password"
           placeholder="Enter Password"
           onChange={handleChange}
+          value={formData.password}
           required
         />
         <Link to="/reset-password" className={styles.link}>

@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, set } from "firebase/database";
 import { auth, database } from "../../config/firebase";
 import styles from "./Signup.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +12,8 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -35,7 +37,7 @@ const Signup = () => {
         email: formData.email,
       });
       alert("Signup successful! You can now log in.");
-      window.location.href = "/login";
+      navigate("/login");
     } catch (error) {
       alert(`Error: ${error.message}`);
     }
@@ -44,7 +46,7 @@ const Signup = () => {
   return (
     <div className={styles.container}>
       <div className={styles.logo}>
-        <img src="logoo.png" alt="Logo" width="80" />
+        <img src="/icons/logoo.png" alt="Logo" width="80" />
       </div>
       <h1>Fresh to us? Let’s Sign Up!</h1>
       <form onSubmit={handleSignup}>

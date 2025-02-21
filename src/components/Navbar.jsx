@@ -11,7 +11,7 @@ const Navbar = () => {
     { name: "Home", ilink: "home-page.png", link: "/" },
     { name: "Roleplay", ilink: "roleplay.png", link: "/roleplay" },
     { name: "Practice", ilink: "practice.png", link: "/practice" }, // Fixed typo
-    { name: "Dashboard", ilink: "ranking.png", link: "/leaderboard" },
+    { name: "Leaderboard", ilink: "ranking.png", link: "/leaderboard" },
   ];
 
   const profilelinks = [
@@ -71,7 +71,7 @@ const Navbar = () => {
       </div>
 
       <nav className={styles.navbar}>
-        <h1>ConvoZO</h1>
+        <img src="/icons/logoo.png" alt="" />
         {navlinks.map((navlink) => (
           <a key={navlink.name} href={navlink.link}>
             <img src={`/icons/${navlink.ilink}`} alt={navlink.name} />
