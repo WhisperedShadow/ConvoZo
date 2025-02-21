@@ -11,7 +11,7 @@ const Navbar = () => {
     { name: "Home", ilink: "home-page.png", link: "/" },
     { name: "Roleplay", ilink: "roleplay.png", link: "/roleplay" },
     { name: "Practice", ilink: "practice.png", link: "/practice" }, // Fixed typo
-    { name: "Dashboard", ilink: "ranking.png", link: "/dashboard" },
+    { name: "Dashboard", ilink: "ranking.png", link: "/leaderboard" },
   ];
 
   const profilelinks = [
