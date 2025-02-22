@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getUserData } from "./datacollector";
 import { signOut } from "firebase/auth";
-import { auth } from "../config/firebase";
+import { auth, db } from "../config/firebase";
+import { doc, updateDoc } from "firebase/firestore";
 import styles from "./Navbar.module.css";
 import { Navigate } from "react-router-dom";
 
@@ -10,7 +11,7 @@ const Navbar = () => {
   const navlinks = [
     { name: "Home", ilink: "home-page.png", link: "/" },
     { name: "Roleplay", ilink: "roleplay.png", link: "/roleplay" },
-    { name: "Practice", ilink: "practice.png", link: "/practice" }, // Fixed typo
+    { name: "Practice", ilink: "practice.png", link: "/practice" },
     { name: "Leaderboard", ilink: "ranking.png", link: "/leaderboard" },
   ];
 
@@ -24,9 +25,17 @@ const Navbar = () => {
   const [name, setName] = useState(null);
   const [streak, setStreak] = useState(null);
   const [log, setLog] = useState(true);
+  const [lastDate, setLastDate] = useState(null);
   const location = useLocation();
+
   useEffect(() => {
-    const unsubscribe = getUserData(setEmail, setName, setStreak, setLog);
+    const unsubscribe = getUserData(
+      setEmail,
+      setName,
+      setStreak,
+      setLog,
+      setLastDate
+    );
 
     const profileIcon = document.querySelector("#profilepopup");
     const popup = document.querySelector("#popup");
@@ -44,6 +53,31 @@ const Navbar = () => {
       unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    const checkAndUpdateStreak = async (uid) => {
+      const today = new Date().toLocaleDateString("en-CA");
+      if (lastDate === today) return;
+
+      try {
+        const userRef = doc(db, "users", uid);
+        const newStreak = streak + 1;
+        await updateDoc(userRef, {
+          lastPracticeDate: today,
+          streak: newStreak,
+        });
+        setStreak(newStreak);
+        setLastDate(today);
+      } catch (error) {
+        console.error("Error updating streak:", error);
+      }
+    };
+    setTimeout(() => {
+      if (auth.currentUser) {
+        checkAndUpdateStreak(auth.currentUser.uid);
+      }
+    }, 30000);
+  }, [lastDate, streak]);
 
   const logout = async () => {
     try {

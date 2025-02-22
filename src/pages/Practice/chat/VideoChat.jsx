@@ -49,7 +49,7 @@ function VideoChat() {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
-        getUserData(() => {}, setUsername, () => {}, () => {});
+        getUserData(() => {}, setUsername, () => {}, () => {}, () => {});
         initializePeer(user.uid);
         set(ref(database, `onlineUsers/${user.uid}`), true);
         ref(database, `onlineUsers/${user.uid}`).onDisconnect().remove();

@@ -10,7 +10,7 @@ const Dashboard = () => {
   const [email, setEmail]=useState(null);
 
   useEffect(() => {
-    const unsub = getUserData(setEmail, setName, setStreak, console.log);
+    const unsub = getUserData(setEmail, setName, setStreak, ()=>{}, ()=>{});
 
     getAllUsers().then((data) => {
       setUsers(data);

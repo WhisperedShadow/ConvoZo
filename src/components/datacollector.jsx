@@ -3,13 +3,14 @@ import { doc, collection, getDoc, setDoc, getDocs } from "firebase/firestore";
 import { ref, get } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
 
-export const getUserStreak = async (uid, setStreak) => {
+export const getUserStreak = async (uid, setStreak, setPracDate) => {
   try {
     const userRef = doc(db, "users", uid);
     const userSnap = await getDoc(userRef);
 
     if (userSnap.exists()) {
       setStreak(userSnap.data().streak);
+      setPracDate(userSnap.data().lastPracticeDate);
     } else {
       const date = new Date().toLocaleDateString("en-CA");
       await setDoc(userRef, {
@@ -24,7 +25,7 @@ export const getUserStreak = async (uid, setStreak) => {
   }
 };
 
-export const getUserData = (setEmail, setName, setStreak, setLog) => {
+export const getUserData = (setEmail, setName, setStreak, setLog, setPracDate) => {
   return onAuthStateChanged(auth, async (user) => {
     if (user) {
       setLog(true);
@@ -39,7 +40,7 @@ export const getUserData = (setEmail, setName, setStreak, setLog) => {
       } catch (error) {
         console.error("Error fetching username:", error);
       }
-      getUserStreak(user.uid, setStreak);
+      getUserStreak(user.uid, setStreak, setPracDate);
     } else {
       setLog(false);
     }
