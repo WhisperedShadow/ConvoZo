@@ -16,7 +16,7 @@ const Practice = () => {
           src="https://cdn-icons-png.flaticon.com/512/5962/5962463.png"
           alt=""
         />
-        <a href="/practice/chat">Chat</a>
+        <a href="/practice/human">Chat</a>
       </div></div>
     </section>
   );

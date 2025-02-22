@@ -1,7 +1,7 @@
 import Home from "../pages/home/Home";
 import Roleplay from "../pages/roleplays/Roleplay";
-import Chat from "../pages/Practice/chat/chat";
 import AI from "../pages/Practice/ai/AI";
+import VideoChat from "../pages/Practice/chat/VideoChat";
 import Practice from "../pages/Practice/Practice";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Login from "../pages/login/login";
@@ -15,7 +15,7 @@ const Routings = () => {
       <Route path="/" element={<Home />} />
       <Route path="/practice" element={<Practice />} />
       <Route path="/practice/ai" element={<AI />} />
-      <Route path="/practice/chat" element={<Chat />} />
+      <Route path="/practice/human" element={<VideoChat />} />
       <Route path="/leaderboard" element={<Dashboard />} />
       <Route path="/roleplay" element={<Roleplay />} />
       <Route path="/login" element={<Login />} />
