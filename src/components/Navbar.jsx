@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Navigate } from "react-router-dom";
 import { getUserData } from "./datacollector";
 import { signOut } from "firebase/auth";
 import { auth, db } from "../config/firebase";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
 import styles from "./Navbar.module.css";
-import { Navigate } from "react-router-dom";
 
 const Navbar = () => {
   const navlinks = [
@@ -23,9 +22,11 @@ const Navbar = () => {
 
   const [email, setEmail] = useState(null);
   const [name, setName] = useState(null);
-  const [streak, setStreak] = useState(null);
+  const [streak, setStreak] = useState(0);
   const [log, setLog] = useState(true);
   const [lastDate, setLastDate] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(10);
+  const [streakUpdated, setStreakUpdated] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -36,84 +37,118 @@ const Navbar = () => {
       setLog,
       setLastDate
     );
-
-    const profileIcon = document.querySelector("#profilepopup");
-    const popup = document.querySelector("#popup");
-
-    if (!profileIcon || !popup) return;
-
-    const togglePopup = () => {
-      popup.classList.toggle(styles.show);
-    };
-
-    profileIcon.addEventListener("click", togglePopup);
-
-    return () => {
-      if (profileIcon) profileIcon.removeEventListener("click", togglePopup);
-      unsubscribe();
-    };
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
-    const checkAndUpdateStreak = async (uid) => {
-      const today = new Date().toLocaleDateString("en-CA");
-      if (lastDate === today) return;
+    const today = new Date().toLocaleDateString("en-CA");
+    if (lastDate === today) {
+      setStreakUpdated(true);
+      return;
+    }
+
+    const fetchTimer = async () => {
+      if (!auth.currentUser) return;
 
       try {
-        const userRef = doc(db, "users", uid);
-        const newStreak = streak + 1;
-        await updateDoc(userRef, {
-          lastPracticeDate: today,
-          streak: newStreak,
-        });
-        setStreak(newStreak);
-        setLastDate(today);
+        const userRef = doc(db, "users", auth.currentUser.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+          setTimeLeft(userSnap.data().practiceSeconds ?? 30 * 60);
+        }
       } catch (error) {
-        console.error("Error updating streak:", error);
+        console.error("Error fetching practice time:", error);
       }
     };
-    setTimeout(() => {
-      if (auth.currentUser) {
-        checkAndUpdateStreak(auth.currentUser.uid);
-      }
-    }, 30000);
-  }, [lastDate, streak]);
+
+    fetchTimer();
+  }, [lastDate]);
+
+  useEffect(() => {
+    if (streakUpdated || timeLeft === null) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 0) {
+          clearInterval(timer);
+          updateStreak();
+          return 0;
+        }
+        const newTime = prevTime - 1;
+        updateTimeInFirestore(newTime);
+        return newTime;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft, streakUpdated]);
+
+  const updateTimeInFirestore = async (newTime) => {
+    if (!auth.currentUser) return;
+    try {
+      await updateDoc(doc(db, "users", auth.currentUser.uid), {
+        practiceSeconds: newTime,
+      });
+    } catch (error) {
+      console.error("Error updating practice time:", error);
+    }
+  };
+
+  const updateStreak = async () => {
+    if (!auth.currentUser || streakUpdated) return;
+    try {
+      const today = new Date().toLocaleDateString("en-CA");
+      const newStreak = streak > 0 ? streak + 1 : 1;
+      await updateDoc(doc(db, "users", auth.currentUser.uid), {
+        lastPracticeDate: today,
+        streak: newStreak,
+        practiceSeconds: 0,
+      });
+      setStreak(newStreak);
+      setLastDate(today);
+      setStreakUpdated(true);
+    } catch (error) {
+      console.error("Error updating streak:", error);
+    }
+  };
 
   const logout = async () => {
     try {
       await signOut(auth);
-      console.log("User Logged Out");
     } catch (error) {
       console.error("Error logging out:", error.message);
     }
   };
 
-  if (
-    location.pathname === "/login" ||
-    location.pathname === "/signup" ||
-    location.pathname === "/reset-password"
-  )
+  if (["/login", "/signup", "/reset-password"].includes(location.pathname)) {
     return null;
+  }
   if (!log) return <Navigate to="/login" />;
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+  };
+
   return (
     <>
       <div className={styles.header}>
         <div className={styles.streak}>
-          <h2>🔥{streak}</h2>
+          <h2>{streakUpdated ? `🔥 ${streak}` : `⏳ ${formatTime(timeLeft)}`}</h2>
           <img src="/icons/circle.png" alt="Streak Icon" id="profilepopup" />
         </div>
       </div>
-
       <nav className={styles.navbar}>
-        <img src="/icons/logoo.png" alt="" />
-        {navlinks.map((navlink) => (
-          <a key={navlink.name} href={navlink.link}>
-            <img src={`/icons/${navlink.ilink}`} alt={navlink.name} />
-            <p>{navlink.name}</p>
+        <img src="/icons/logoo.png" alt="Logo" />
+        {navlinks.map(({ name, ilink, link }) => (
+          <a key={name} href={link}>
+            <img src={`/icons/${ilink}`} alt={name} />
+            <p>{name}</p>
           </a>
         ))}
       </nav>
-
       <div id="popup" className={styles.popup}>
         <div>
           <img src="/icons/circle.png" alt="Profile" />
@@ -121,11 +156,11 @@ const Navbar = () => {
         <p>{name}</p>
         <p>{email}</p>
         <hr />
-        {profilelinks.map((link) => (
-          <div key={link.name}>
+        {profilelinks.map(({ name, ilink }) => (
+          <div key={name}>
             <a href="#">
-              <img src={`/icons/${link.ilink}`} alt={link.name} />
-              {link.name}
+              <img src={`/icons/${ilink}`} alt={name} />
+              {name}
             </a>
             <hr />
           </div>
