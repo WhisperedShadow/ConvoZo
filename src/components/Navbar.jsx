@@ -51,6 +51,7 @@ const Navbar = () => {
 
       if (userSnap.exists()) {
         const savedTime = userSnap.data().practiceSeconds ?? 30 * 60;
+        setLastDate(userSnap.data().lastPracticeDate);
         setTimeLeft(savedTime);
       }
     } catch (error) {
