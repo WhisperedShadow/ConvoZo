@@ -22,9 +22,10 @@ const AI = () => {
   }, [convo]);
 
   useEffect(() => {
-    document.getElementById("mic").style.backgroundColor = listening
-      ? "red"
-      : "green";
+    const micButton = document.getElementById("mic");
+    if (micButton) {
+      micButton.style.backgroundColor = listening ? "red" : "green";
+    }
   }, [listening]);
 
   const listen = async () => {
@@ -34,36 +35,31 @@ const AI = () => {
     const newConvo = [...convo, { speaker: "User", text: userText }];
     setConvo(newConvo);
 
+    const formattedConvo = newConvo.map((con) => `${con.speaker}: ${con.text}`).join("\n");
+
     askGemini(
       `You are ConvoZo, an AI English learning and communication skill development partner. Your goal is to help users improve their spoken English through natural conversations.
 
-The conversation so far is: ${JSON.stringify(
-        newConvo
-      )}. Reply naturally to the last user response.
+The conversation so far is: 
+
+${formattedConvo}
+
+Reply naturally to the last user response.
 
 Guidelines:
-Engage in fluent and natural conversations, encouraging users to express themselves clearly.
-Correct mistakes subtly by rephrasing responses rather than direct corrections.
-Keep responses relevant to everyday communication and English learning.
-Do not generate responses unrelated to English learning or ConvoZo’s features.
-Do not use bold text, italics, or any formatting.
-Maintain a friendly and encouraging tone.
-ConvoZo Features:
-Roleplay Scenarios – Users can practice conversations in different real-life situations.
-AI Conversation Practice – The main feature where users talk with AI to improve fluency and confidence.
-Video Chat with Others – Users can connect with people to practice speaking.
-Daily Streaks & Leaderboard – Encourage consistent learning with streaks and rankings.
-Always focus on improving users' communication skills while keeping the conversation engaging and interactive.`,
+- Engage in fluent and natural conversations, encouraging users to express themselves clearly.
+- Correct mistakes subtly by rephrasing responses rather than direct corrections.
+- Keep responses relevant to everyday communication and English learning.
+- Do not generate responses unrelated to English learning or ConvoZo’s features.
+- Maintain a friendly and encouraging tone.`,
+
       setResponse
     );
   };
 
   useEffect(() => {
     if (response.trim()) {
-      setConvo((prevConvo) => [
-        ...prevConvo,
-        { speaker: "AI", text: response },
-      ]);
+      setConvo((prevConvo) => [...prevConvo, { speaker: "AI", text: response }]);
     }
   }, [response]);
 

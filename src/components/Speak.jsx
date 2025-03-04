@@ -6,7 +6,7 @@ recognition.continuous = false;
 recognition.interimResults = false;
 
 const API_KEY = "AIzaSyD6BHGLVrojHn4gY2SaMNQvlEgrciPoKKM";
-const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_KEY}`;
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
 
 export const speakText = (text) => {
   if (!window.speechSynthesis) {
@@ -18,7 +18,6 @@ export const speakText = (text) => {
   utterance.rate = 1;
   utterance.pitch = 1.2;
   utterance.volume = 1;
-
   window.speechSynthesis.speak(utterance);
 };
 
@@ -61,14 +60,16 @@ export const askGemini = async (text, setResponse) => {
     const data = await response.json();
     console.log("API Response:", data);
 
-    if (data?.candidates?.length > 0) {
-      const aiText = data.candidates[0].content.parts[0].text;
+    if (data?.candidates && data.candidates.length > 0) {
+      const aiText =
+        data.candidates[0]?.content?.parts?.[0]?.text ||
+        "Sorry, I couldn't generate a response.";
       setResponse(aiText);
     } else {
       setResponse("Sorry! I can't understand.");
     }
   } catch (error) {
-    console.error("Error:", error);
+    console.error("API Error:", error);
     setResponse("Sorry! I can't understand.");
   }
 };
