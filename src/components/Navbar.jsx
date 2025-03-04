@@ -25,8 +25,10 @@ const Navbar = () => {
   const [streak, setStreak] = useState(0);
   const [log, setLog] = useState(true);
   const [lastDate, setLastDate] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(10);
+  const [timeLeft, setTimeLeft] = useState(null);
   const [streakUpdated, setStreakUpdated] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+
   const location = useLocation();
 
   useEffect(() => {
@@ -40,30 +42,25 @@ const Navbar = () => {
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    const today = new Date().toLocaleDateString("en-CA");
-    if (lastDate === today) {
-      setStreakUpdated(true);
-      return;
-    }
+  const fetchPracticeTime = async () => {
+    if (!auth.currentUser) return;
 
-    const fetchTimer = async () => {
-      if (!auth.currentUser) return;
+    try {
+      const userRef = doc(db, "users", auth.currentUser.uid);
+      const userSnap = await getDoc(userRef);
 
-      try {
-        const userRef = doc(db, "users", auth.currentUser.uid);
-        const userSnap = await getDoc(userRef);
-
-        if (userSnap.exists()) {
-          setTimeLeft(userSnap.data().practiceSeconds ?? 30 * 60);
-        }
-      } catch (error) {
-        console.error("Error fetching practice time:", error);
+      if (userSnap.exists()) {
+        const savedTime = userSnap.data().practiceSeconds ?? 30 * 60;
+        setTimeLeft(savedTime);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching practice time:", error);
+    }
+  };
 
-    fetchTimer();
-  }, [lastDate]);
+  useEffect(() => {
+    fetchPracticeTime();
+  }, [location.pathname]); 
 
   useEffect(() => {
     if (streakUpdated || timeLeft === null) return;
@@ -135,8 +132,8 @@ const Navbar = () => {
   return (
     <>
       <div className={styles.header}>
-        <div className={styles.streak}>
-          <h2>{streakUpdated ? `🔥 ${streak}` : `⏳ ${formatTime(timeLeft)}`}</h2>
+        <div className={styles.streak} onClick={() => setShowPopup(!showPopup)}>
+          <h2>{streakUpdated  || lastDate === new Date().toLocaleDateString("en-CA")? `🔥 ${streak}` : `⏳ ${formatTime(timeLeft)}`}</h2>
           <img src="/icons/circle.png" alt="Streak Icon" id="profilepopup" />
         </div>
       </div>
@@ -149,7 +146,7 @@ const Navbar = () => {
           </a>
         ))}
       </nav>
-      <div id="popup" className={styles.popup}>
+      <div className={`${styles.popup} ${showPopup ? styles.show : ""}`}>
         <div>
           <img src="/icons/circle.png" alt="Profile" />
         </div>
