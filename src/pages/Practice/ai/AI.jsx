@@ -14,6 +14,8 @@ const AI = () => {
   const [response, setResponse] = useState("");
 
   useEffect(() => {
+    if (convo.length === 0) return;
+
     const lastMessage = convo[convo.length - 1];
     if (lastMessage.speaker === "AI") {
       speakText(lastMessage.text);
@@ -32,13 +34,15 @@ const AI = () => {
     const userText = await startListening(setListening);
     if (!userText.trim()) return;
 
-    const newConvo = [...convo, { speaker: "User", text: userText }];
-    setConvo(newConvo);
+    setConvo((prevConvo) => {
+      const newConvo = [...prevConvo, { speaker: "User", text: userText }];
 
-    const formattedConvo = newConvo.map((con) => `${con.speaker}: ${con.text}`).join("\n");
+      const formattedConvo = newConvo
+        .map((con) => `${con.speaker}: ${con.text}`)
+        .join("\n");
 
-    askGemini(
-      `You are ConvoZo, an AI English learning and communication skill development partner. Your goal is to help users improve their spoken English through natural conversations.
+      askGemini(
+        `You are ConvoZo, an AI English learning and communication skill development partner. Your goal is to help users improve their spoken English through natural conversations.
 
 The conversation so far is: 
 
@@ -53,13 +57,20 @@ Guidelines:
 - Do not generate responses unrelated to English learning or ConvoZo’s features.
 - Maintain a friendly and encouraging tone.`,
 
-      setResponse
-    );
+        setResponse
+      );
+
+      return newConvo;
+    });
   };
 
   useEffect(() => {
     if (response.trim()) {
-      setConvo((prevConvo) => [...prevConvo, { speaker: "AI", text: response }]);
+      setConvo((prevConvo) => [
+        ...prevConvo,
+        { speaker: "AI", text: response },
+      ]);
+      setResponse("");
     }
   }, [response]);
 
