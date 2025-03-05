@@ -6,7 +6,7 @@ recognition.continuous = false;
 recognition.interimResults = false;
 
 const API_KEY = "AIzaSyD6BHGLVrojHn4gY2SaMNQvlEgrciPoKKM";
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
+const API_URL = `https://generativelanguage.googleapis.com/v1/tunedModels/copy-of-datas-e9vk18aybruy:generateContent?key=${API_KEY}`;
 
 export const speakText = (text) => {
   if (!window.speechSynthesis) {
