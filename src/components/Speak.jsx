@@ -6,7 +6,7 @@ recognition.continuous = false;
 recognition.interimResults = false;
 recognition.running = false; 
 
-const API_KEY = "AIzaSyDrL6nc7eRDPTJMWpi911_QSq9JhvkWCKQ";
+const API_KEY = import.meta.env.VITE_API_KEY;
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
 export const speakText = (text) => {
