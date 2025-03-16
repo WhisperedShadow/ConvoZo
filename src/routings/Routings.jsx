@@ -7,6 +7,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Login from "../pages/login/login";
 import Signup from "../pages/signup/Signup";
 import ResetPassword from "../pages/reset/ResetPassword";
+import Talk from "../pages/roleplays/plays/Talk";
 import { Routes, Route } from "react-router-dom";
 
 const Routings = () => {
@@ -21,6 +22,7 @@ const Routings = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/reset-password" element={<ResetPassword/>} />
+      <Route path="/roleplay/:id" element={<Talk/>}/>
     </Routes>
   );
 };

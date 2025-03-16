@@ -1,0 +1,98 @@
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    font-size: 24px;
+    color: #08203e;
+  }
+  
+  p {
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .chatBox {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+  
+  .aiMessage, .userMessage {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  
+  .aiMessage {
+    background-color: #447b9c;
+    color: #fff;
+    text-align: left;
+  }
+  
+  .userMessage {
+    background-color: #e43944;
+    color: #fff;
+    text-align: right;
+  }
+  
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+  }
+  
+  #mic {
+    background-color: green;
+    color: white;
+  }
+  
+  #mic[disabled] {
+    background-color: gray;
+    cursor: not-allowed;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  .evaluation {
+    margin-top: 20px;
+    padding: 10px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .evaluation label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .evaluation input[type="range"] {
+    width: 80%;
+    margin: 5px 0;
+  }
+  

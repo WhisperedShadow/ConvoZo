@@ -25,7 +25,13 @@ export const getUserStreak = async (uid, setStreak, setPracDate) => {
   }
 };
 
-export const getUserData = (setEmail, setName, setStreak, setLog, setPracDate) => {
+export const getUserData = (
+  setEmail,
+  setName,
+  setStreak,
+  setLog,
+  setPracDate
+) => {
   return onAuthStateChanged(auth, async (user) => {
     if (user) {
       setLog(true);
@@ -80,4 +86,39 @@ export const getAllUsers = async () => {
   }
 
   return combinedUsers;
+};
+
+export const getRoleplayData = async (setData) => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "roleplays")); 
+    if (!querySnapshot.empty) {
+      const roleplays = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setData(roleplays);
+    } else {
+      setData("No data found");
+    }
+  } catch (error) {
+    console.error("Error fetching roleplay data:", error);
+    setData("Error fetching data");
+  }
+};
+
+
+export const getSingleRoleplayData = async (id, setData) => {
+  try {
+    const docRef = doc(db, "roleplays", id);
+    const docSnap = await getDoc(docRef); 
+
+    if (docSnap.exists()) {
+      setData({ id: docSnap.id, ...docSnap.data() });
+    } else {
+      setData("Document not found");
+    }
+  } catch (error) {
+    console.error("Error fetching roleplay:", error);
+    setData("Error fetching data");
+  }
 };
