@@ -53,6 +53,7 @@
 .navbar a {
   font-size: larger;
   background-color: #d714d1;
+  color: #f4f4f4;
   border-radius: 0 10px 10px 0;
   border: #d714d1 3px solid;
   transition: 0.3s;
