@@ -70,8 +70,90 @@ button:hover {
   text-decoration: underline;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 768px) {
+  .container {
+    height: auto;
+    padding: 20px;
+  }
+
+  .logo img {
+    width: 80px; 
+    height: auto;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
   form {
-    width: 90%;
+    width: 80%;
+    max-width: 320px;
+    padding: 1.5rem;
+  }
+
+  input {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  .link {
+    font-size: 0.85rem;
   }
 }
+
+@media (max-width: 480px) {
+  form {
+    width: 90%;
+    padding: 1.2rem;
+  }
+
+  h1 {
+    font-size: 1rem;
+  }
+
+  input {
+    font-size: 0.85rem;
+    padding: 7px;
+  }
+
+  button {
+    font-size: 0.85rem;
+    padding: 9px;
+  }
+
+  .link {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .logo img {
+    width: 70px;
+  }
+
+  form {
+    padding: 1rem;
+    width: 95%;
+  }
+
+  input {
+    font-size: 0.8rem;
+    padding: 7px;
+  }
+
+  button {
+    font-size: 0.8rem;
+    padding: 9px;
+  }
+
+  .link {
+    font-size: 0.75rem;
+  }
+}
+

@@ -138,13 +138,67 @@
     transform: translateX(0px);
   }
 }
+@media (max-width: 768px) {
+  .streak {
+    width: 150px;
+    right: 5px;
+    top: 5px;
+    font-size: 12px;
+  }
 
-@media (max-width: 800px) {
   .navbar a p {
     display: none;
   }
 
+  .streak h2 {
+    font-size: 14px;
+  }
+
+  .header img {
+    height: 50px;
+    width: 50px;
+  }
+
+  .navbar {
+    width: 80px;
+    height: 100%;
+  }
+
   .navbar a {
-    width: 70px;
+    width: 60px;
+    font-size: 14px;
+    padding: 5px;
+  }
+
+  .navbar a img {
+    height: 25px;
+    width: 25px;
+  }
+
+  .navbar h1 {
+    font-size: 1.2em;
+  }
+
+  .popup {
+    width: 220px;
+    height: 250px;
+    right: 5px;
+    top: 50px;
+  }
+
+  .popup img {
+    height: 50px;
+    width: 50px;
+  }
+
+  .popup a img {
+    height: 25px;
+    width: 25px;
+  }
+
+  .popup button {
+    font-size: 14px;
+    padding: 5px;
   }
 }
+

@@ -46,8 +46,90 @@
 }
 
 
-@media (max-width: 800px) {
-    .practice div{
-        flex-direction: column;
+@media (max-width: 1024px) {
+    .practice {
+        height: auto;
+        padding: 40px 20px;
     }
-  }
+
+    .practice h1 {
+        font-size: 2.5rem;
+        text-align: center;
+    }
+
+    .practice div {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .practice div div {
+        width: 260px;
+        height: 360px;
+    }
+
+    .practice div img {
+        width: 180px;
+        height: 180px;
+    }
+
+    .practice div a {
+        font-size: 24px;
+        padding: 0.8rem;
+        width: 90px;
+    }
+}
+
+@media (max-width: 800px) {
+    .practice div {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .practice h1 {
+        font-size: 2rem;
+    }
+
+    .practice div div {
+        width: 280px;
+        height: 380px;
+    }
+
+    .practice div img {
+        width: 160px;
+        height: 160px;
+    }
+
+    .practice div a {
+        font-size: 22px;
+        padding: 0.7rem;
+        width: 85px;
+    }
+}
+
+@media (max-width: 480px) {
+    .practice {
+        padding: 30px 10px;
+    }
+
+    .practice h1 {
+        font-size: 1.8rem;
+    }
+
+    .practice div div {
+        width: 240px;
+        height: 340px;
+    }
+
+    .practice div img {
+        width: 140px;
+        height: 140px;
+    }
+
+    .practice div a {
+        font-size: 20px;
+        padding: 0.6rem;
+        width: 80px;
+    }
+}
