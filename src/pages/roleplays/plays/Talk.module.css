@@ -28,7 +28,8 @@ p {
   margin-bottom: 15px;
 }
 
-.aiMessage, .userMessage {
+.aiMessage,
+.userMessage {
   padding: 10px;
   margin: 5px 0;
   border-radius: 8px;
@@ -98,92 +99,93 @@ button:hover {
 
 @media (max-width: 768px) {
   .container {
-    margin-top: 20%;
-      max-width: 85%; 
-      margin-left: 15%; 
-      padding: 15px;
+    margin-top: 30%;
+    max-width: 85%;
+    margin-left: 15%;
+    padding: 15px;
   }
 
   h1 {
-      font-size: 20px;
+    font-size: 20px;
   }
 
   p {
-      font-size: 14px;
+    font-size: 14px;
   }
 
   .chatBox {
-      max-height: 250px;
-      padding: 8px;
+    max-height: 250px;
+    padding: 8px;
   }
 
-  .aiMessage, .userMessage {
-      font-size: 13px;
-      padding: 8px;
+  .aiMessage,
+  .userMessage {
+    font-size: 13px;
+    padding: 8px;
   }
 
   .controls {
-      flex-direction: column;
-      gap: 5px;
+    flex-direction: column;
+    gap: 5px;
   }
 
   button {
-      width: 100%;
-      padding: 8px;
-      font-size: 14px;
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
   }
 
   .evaluation {
-      padding: 8px;
+    padding: 8px;
   }
 
   .evaluation input[type="range"] {
-      width: 100%;
+    width: 100%;
   }
 }
 
 @media (max-width: 480px) {
   .container {
-      max-width: 80%; 
-      margin-left: 15%; 
-      padding: 10px;
+    max-width: 80%;
+    margin-left: 15%;
+    padding: 10px;
   }
 
   h1 {
-      font-size: 18px;
+    font-size: 18px;
   }
 
   p {
-      font-size: 13px;
+    font-size: 13px;
   }
 
   .chatBox {
-      max-height: 220px;
-      padding: 6px;
+    max-height: 220px;
+    padding: 6px;
   }
 
-  .aiMessage, .userMessage {
-      font-size: 12px;
-      padding: 6px;
+  .aiMessage,
+  .userMessage {
+    font-size: 12px;
+    padding: 6px;
   }
 
   .controls {
-      flex-direction: column;
-      gap: 5px;
+    flex-direction: column;
+    gap: 5px;
   }
 
   button {
-      width: 100%;
-      padding: 7px;
-      font-size: 13px;
+    width: 100%;
+    padding: 7px;
+    font-size: 13px;
   }
 
   .evaluation {
-      padding: 6px;
+    padding: 6px;
   }
 
   .evaluation input[type="range"] {
-      width: 100%;
+    width: 100%;
   }
 }
-
