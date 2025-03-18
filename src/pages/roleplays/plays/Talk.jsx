@@ -120,7 +120,7 @@ const Talk = () => {
   }, [result]);
 
   const reset = () => {
-    setConvo([{ speaker: "AI", text: "Hi! I am your AI Partner" }]);
+    setConvo([{ speaker: "AI", text: data["ScenarioMessage"] }]);
     document.getElementById("mic").disabled = false;
     setEvaluated(null);
   };

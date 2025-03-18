@@ -19,9 +19,10 @@ const Roleplay = () => {
         <div className={styles.grid}>
           {datas.map((data, index) => (
             <div key={index} className={styles.card}>
+              <img src={data.img} alt="Scenario" className={styles.image} />
               <h3 className={styles.role}>{data["User role"]} 🆚 {data["Ai role"]}</h3>
               <p className={styles.message}>{data["ScenarioMessage"]}</p>
-              <a href={`/roleplay/${data.id}`} className={styles.link}>🔗 {data.id}</a>
+              <a href={`/roleplay/${data.id}`} className={styles.link}>🔗Start</a>
             </div>
           ))}
         </div>
